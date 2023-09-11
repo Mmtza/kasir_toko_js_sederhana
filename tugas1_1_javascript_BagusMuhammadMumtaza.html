@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Transaksi Toko - Mumtaza</title>
+  </head>
+  <body>
+    <h1>Transaksi Toko</h1>
+    <form id="transaksiForm">
+      <label for="namaPelanggan">Nama Pelanggan:</label>
+      <input type="text" id="namaPelanggan" required /><br /><br />
+
+      <label for="produkPilihan">Produk Pilihan:</label>
+      <select id="produkPilihan" required>
+        <option value="TV">TV</option>
+        <option value="AC">AC</option>
+        <option value="Kulkas">Kulkas</option></select
+      ><br /><br />
+
+      <label for="jumlahBeli">Jumlah Pembelian:</label>
+      <input type="number" id="jumlahBeli" required /><br /><br />
+
+      <input type="submit" value="Hitung Total" />
+    </form>
+
+    <div id="hasilTransaksi">
+      <!-- Hasil transaksi akan ditampilkan di sini -->
+    </div>
+
+    <script>
+      document.getElementById("transaksiForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Ambil input dari formulir
+        var pelanggan = document.getElementById("namaPelanggan").value;
+        var produkPilihan = document.getElementById("produkPilihan").value;
+        var jml_beli = parseInt(document.getElementById("jumlahBeli").value);
+
+        // Harga satuan produk
+        var harga_satuan;
+
+        if (produkPilihan === "TV") {
+          harga_satuan = 2000000; // Harga TV
+        } else if (produkPilihan === "AC") {
+          harga_satuan = 3000000; // Harga AC
+        } else if (produkPilihan === "Kulkas") {
+          harga_satuan = 4000000; // Harga Kulkas
+        } else {
+          produkPilihan = "Produk tidak valid";
+        }
+
+        // Hitung harga kotor
+        var harga_kotor = jml_beli * harga_satuan;
+
+        // Menghitung diskon dengan operasi ternary
+        var diskon = produkPilihan === "Kulkas" && jml_beli >= 3 ? 0.3 * harga_kotor : 0.1 * harga_kotor;
+
+        // Hitung PPN
+        var ppn = 0.11 * (harga_kotor - diskon);
+
+        // Hitung harga bayar
+        var harga_bayar = harga_kotor - diskon + ppn;
+
+        // Tampilkan hasil transaksi di dalam div
+        var hasilTransaksi = document.getElementById("hasilTransaksi");
+        hasilTransaksi.innerHTML = "Pelanggan: " + pelanggan + "<br>";
+        hasilTransaksi.innerHTML += "Produk Pilihan: " + produkPilihan + "<br>";
+        hasilTransaksi.innerHTML += "Jumlah Pembelian: " + jml_beli + " unit<br>";
+        hasilTransaksi.innerHTML += "Harga Satuan: Rp." + harga_satuan + "<br>";
+        hasilTransaksi.innerHTML += "Harga Kotor: Rp." + harga_kotor + "<br>";
+        hasilTransaksi.innerHTML += "Diskon: Rp." + diskon + "<br>";
+        hasilTransaksi.innerHTML += "PPN: Rp." + ppn + "<br>";
+        hasilTransaksi.innerHTML += "Harga Bayar: Rp." + harga_bayar + "<br>";
+      });
+    </script>
+  </body>
+</html>
